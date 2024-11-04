@@ -9,29 +9,6 @@ from typing import Callable, Iterable
 #
 # Implementation of a prelude of elementary functions.
 
-# Mathematical functions:
-# - mul
-# - id
-# - add
-# - neg
-# - lt
-# - eq
-# - max
-# - is_close
-# - sigmoid
-# - relu
-# - log
-# - exp
-# - log_back
-# - inv
-# - inv_back
-# - relu_back
-#
-# For sigmoid calculate as:
-# $f(x) =  \frac{1.0}{(1.0 + e^{-x})}$ if x >=0 else $\frac{e^x}{(1.0 + e^{x})}$
-# For is_close:
-# $f(x) = |x - y| < 1e-2$
-
 def mul(a, b):
     return a * b
 
@@ -117,5 +94,46 @@ def relu_back(x, d_out):
 # - sum: sum lists
 # - prod: take the product of lists
 
+def map(itr, f):
+    for el in itr:
+        yield f(el)
 
-# TODO: Implement for Task 0.3.
+
+def zipWith(it1, it2, f):
+    for el1, el2 in zip(it1, it2):
+        yield f(el1, el2)
+
+
+def reduce(f, itr, initial=None):
+    """
+    Reduces an iterable to a single value using a given function.
+    """
+    iterator = iter(itr)
+
+    if initial is None:
+        try:
+            result = next(iterator)
+        except StopIteration:
+            raise TypeError("reduce() of empty sequence with no initial value")
+    else:
+        result = initial
+
+    for el in iterator:
+        result = f(result, el)
+
+    return result
+
+
+def negList(lst):
+    return list(map(lst, neg))
+
+
+def addLists(l1, l2):
+    return list(zipWith(l1, l2, add))
+
+def sum(lst):
+    return reduce(add, lst)
+
+def prod(lst):
+    return reduce(mul, lst)
+
