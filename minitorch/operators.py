@@ -28,7 +28,9 @@ def eq(a, b):
     return a == b
 
 def max(a, b):
-    return max(a, b)
+    if a > b:
+        return a
+    return b
 
 def is_close(a, b):
     return abs(a - b) < 1e-2
@@ -114,7 +116,7 @@ def reduce(f, itr, initial=None):
         try:
             result = next(iterator)
         except StopIteration:
-            raise TypeError("reduce() of empty sequence with no initial value")
+            return 0
     else:
         result = initial
 
